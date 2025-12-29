@@ -14,3 +14,4 @@ Airport_Coordinates = {
 
 
 
+print(hopsworks_api_key)
