@@ -12,6 +12,3 @@ Airport_Coordinates = {
     "ARN": {"lat": 59.6519, "long": 17.9186},
 }
 
-
-
-print(hopsworks_api_key)
