@@ -1,0 +1,51 @@
+name: Daily Feature Pipeline
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Run at 8 AM 
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-features:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install papermill ipykernel
+          pip install pandas requests hopsworks datetime
+      
+      - name: Update Weather Features
+        env:
+          HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
+        run: |
+          papermill Feature_Pipeline-Weather.ipynb \
+            output/Weather-$(date +%Y%m%d).ipynb
+      
+      - name: Update Flight Features
+        env:
+          HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
+          SWEDAVIA_API_KEY: ${{ secrets.SWEDAVIA_API_KEY }}
+        run: |
+          papermill Feature_Pipeline-Flight_Data.ipynb \
+            output/Flights-$(date +%Y%m%d).ipynb \
+            -p days_back 2 \
+            -p days_forward 7
+      
+      - name: Upload outputs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: pipeline-outputs
+          path: output/*.ipynb
+          retention-days: 7
+
+

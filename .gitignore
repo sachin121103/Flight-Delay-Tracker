@@ -1,1 +1,5 @@
 .env
+.ipynb_checkpoints/Feature_Pipeline-Flight_Data-checkpoint.ipynb
+.ipynb_checkpoints/Feature_Pipeline-Temporal-checkpoint.ipynb
+.ipynb_checkpoints/Feature_Pipeline-Weather-checkpoint.ipynb
+.ipynb_checkpoints/Training_Pipeline-checkpoint.ipynb
