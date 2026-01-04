@@ -11,10 +11,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Updated
+        uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v5  # Updated
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
       
@@ -22,6 +22,9 @@ jobs:
         run: |
           pip install papermill ipykernel
           pip install pandas requests hopsworks datetime
+      
+      - name: Create output directory
+        run: mkdir -p output
       
       - name: Update Weather Features
         env:
@@ -42,7 +45,7 @@ jobs:
       
       - name: Upload outputs
         if: always()
-        uses: actions/upload-artifact@v4  # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: pipeline-outputs
           path: output/*.ipynb
