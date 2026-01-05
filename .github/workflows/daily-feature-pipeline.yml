@@ -28,24 +28,27 @@ jobs:
         run: mkdir -p output
       
       - name: Update Weather Features
-        env:
-          HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
         run: |
           papermill Feature_Pipeline-Weather.ipynb \
             output/Weather-$(date +%Y%m%d).ipynb \
+            -p hopsworks_api_key "$HOPSWORKS_API_KEY" \
             -k python3
-      
-      - name: Update Flight Features
         env:
           HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
-          SWEDAVIA_API_KEY: ${{ secrets.SWEDAVIA_API_KEY }}
+
+      - name: Update Flight Features
         run: |
           papermill Feature_Pipeline-Flight_Data.ipynb \
             output/Flights-$(date +%Y%m%d).ipynb \
             -p days_back 2 \
             -p days_forward 7 \
+            -p hopsworks_api_key "$HOPSWORKS_API_KEY" \
+            -p swedavia_api_key "$SWEDAVIA_API_KEY" \
             -k python3
-      
+        env:
+          HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
+          SWEDAVIA_API_KEY: ${{ secrets.SWEDAVIA_API_KEY }}
+            
       - name: Upload outputs
         if: always()
         uses: actions/upload-artifact@v4
