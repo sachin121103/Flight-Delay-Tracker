@@ -20,8 +20,10 @@ jobs:
       
       - name: Install dependencies
         run: |
+          pip install --upgrade pip
           pip install papermill ipykernel
-          pip install pandas requests hopsworks datetime
+          pip install pandas requests hopsworks great_expectations
+          pip install xgboost scikit-learn numpy joblib
       
       - name: Create output directory
         run: mkdir -p output
@@ -31,7 +33,8 @@ jobs:
           HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
         run: |
           papermill Feature_Pipeline-Weather.ipynb \
-            output/Weather-$(date +%Y%m%d).ipynb
+            output/Weather-$(date +%Y%m%d).ipynb \
+            -k python3
       
       - name: Update Flight Features
         env:
@@ -41,7 +44,8 @@ jobs:
           papermill Feature_Pipeline-Flight_Data.ipynb \
             output/Flights-$(date +%Y%m%d).ipynb \
             -p days_back 2 \
-            -p days_forward 7
+            -p days_forward 7 \
+            -k python3
       
       - name: Upload outputs
         if: always()
