@@ -23,7 +23,7 @@ jobs:
           pip install --upgrade pip
           pip install papermill ipykernel
           pip install pandas requests hopsworks great_expectations
-          pip install xgboost scikit-learn numpy joblib
+          pip install xgboost scikit-learn numpy joblib dotenv
       
       - name: Create output directory
         run: mkdir -p output
