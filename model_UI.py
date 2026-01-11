@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 import os
 
+
 try:
     hopsworks_api_key = st.secrets["HOPSWORKS_API_KEY"]
 except (KeyError, FileNotFoundError):
