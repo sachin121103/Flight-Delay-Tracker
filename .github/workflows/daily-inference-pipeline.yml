@@ -1,0 +1,55 @@
+name: Daily Inference Pipeline
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  
+  workflow_dispatch:
+
+jobs:
+  run-inference:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install papermill ipykernel
+          pip install -r requirements.txt
+      
+      - name: Create output directory
+        run: mkdir -p output
+      
+      - name: Run Inference Pipeline
+        run: |
+          papermill Inference_Pipeline.ipynb \
+            output/Inference-$(date +%Y%m%d).ipynb \
+            -p hopsworks_api_key "$HOPSWORKS_API_KEY" \
+            -k python3
+        env:
+          HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
+      
+      - name: Upload inference results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inference-outputs
+          path: output/*.ipynb
+          retention-days: 7
+      
+      - name: Upload generated dashboards
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboards
+          path: |
+            ./flight_delay_forecast.png
+            ./flight_delay_hindcast.png
+          retention-days: 30
