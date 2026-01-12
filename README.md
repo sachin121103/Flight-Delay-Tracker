@@ -26,3 +26,7 @@ The model used in an XGBoost Classifier for binary classification of whether a f
 
 ## Inference Pipeline
 The inference pipeline loads the trained model and the feature groups from Hopsworks. It then merges the feature data in the same way as was done before training. Predictions are then made of whether a flight will be delayed or not, and by what probability. Finally, the inference pipeline also visualises the result using a dashboard.
+
+## UI
+
+The UI can be found at the link here: https://arlanda-flight-delay.streamlit.app/
