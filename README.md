@@ -22,4 +22,4 @@ The temporal feature pipeline is used to fetch public holidays in Sweden, which 
 ## Training Pipeline
 The training pipeline fetches the flights, weather and temporal feature groups from the Hopsworks feature store. It then merges the flight data with the temporal data based on date. The weather data is then merged based on timestamp in order to make it more precise for the flight schedule. The probability of delay is calculated based on weather conditions and the temporal data.
 
-The model used in an XGBoost Classifier for binary classification of whether a flight will be delayed or not.
+The model used in an XGBoost Classifier for binary classification of whether a flight will be delayed or not. The model is saved in the Hopsworks model registry.
