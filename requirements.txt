@@ -1,7 +1,7 @@
 streamlit
 pandas>=2.0,<2.3
 numpy>=1.24,<2.0
-hopsworks==3.4.5
+hopsworks==4.6.0
 hsfs==3.4.9
 joblib
 scikit-learn
